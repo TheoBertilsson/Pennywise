@@ -1,68 +1,185 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: Bangers;
+  src: url("./assets/Bangers/Bangers-Regular.ttf") format("truetype");
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+@font-face {
+  font-family: Balthazar;
+  src: url("./assets/Balthazar/Balthazar-Regular.ttf") format("truetype");
 }
-a:hover {
-  color: #535bf2;
+* {
+  font-family: Balthazar;
 }
-
 body {
+  width: 100%;
   margin: 0;
+}
+
+/*  Home.TSX  */
+.mainHeader {
+  margin: 0;
+  height: 120px;
+  background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+}
+.appImg {
+  height: 64px;
+  width: 64px;
+  background-color: #fff;
+  padding: 12px;
+  border: solid black 4px;
+  border-radius: 12px;
+  position: absolute;
+  top: 60px;
+  box-shadow: 5px 2.5px 2.5px rgb(76, 76, 76);
+}
+.homeMain {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.homeMain section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.welcome {
+  font-size: 36px;
+}
+.pennywise {
+  font-size: 60px;
+  font-family: Bangers;
+}
+.spending img,
+.piggy img,
+.budget img {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 40px;
+  margin-top: 5px;
+}
+.spending span,
+.piggy span,
+.budget span {
+  font-size: 20px;
+  font-family: Bangers;
+  margin-top: 30px;
+  margin-left: 40px;
+  text-align: center;
+}
+.spending p,
+.piggy p,
+.budget p {
+  width: 200px;
+  margin-top: 0;
+  margin-left: 30px;
+  text-align: center;
+}
+.spending {
+  margin-top: 7vh;
+}
+.signupBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
+  width: 320px;
+  height: 59px;
+  border-radius: 20px;
+  font-family: Bangers;
+  margin-top: auto;
+  color: black;
+  font-size: 32px;
+  margin-top: 8vh;
+  box-shadow: 5px 2.5px 2.5px rgb(76, 76, 76);
+}
+.loginBtn {
+  font-size: 22px;
+  text-align: center;
+  color: black;
+  margin-top: 2vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/*  Signup.tsx  */
+.headerSignup{
+  margin: 0;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+    /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+    border-bottom: solid 4px transparent;
+    background-image: linear-gradient(white, white),
+                      linear-gradient(to left, #dd64b4, #ffd700);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+.headerSignup h1{
+  font-family: Bangers;
+  font-size: 70px;
+  background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.signUp {
+  margin: auto;
+  justify-content: center;
+  width: 310px;
+  height: 511px;
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+
+  /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+  border: solid 4px transparent;
+  border-radius: 12px;
+  background-image: linear-gradient(white, white),
+                    linear-gradient(to left, #dd64b4, #ffd700);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.signUp span{
+  font-size: 36px;
+  align-items: flex-start;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+}
+.signUp input{
+  width: 225px;
+  height: 50px;
+  border: 2px solid black;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 24px;
+  margin-top: 2vh;
+}
+.createAccBtn{
+  margin-top: 7vh;
+  width: 270px;
+  height: 50px;
+  font-family: Bangers;
+  font-size: 32px;
+
+  /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+  border: solid 2px transparent;
+  border-radius: 12px;
+  background-image: linear-gradient(to right, #ffd700, #dd64b4),
+                    linear-gradient(to left, #dd64b4, #ffd700);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.signUp a{
+  font-size: 22px;
+  margin-top: 2vh;
+  color: rgba(0, 0, 0, .6);
 }
