@@ -39,17 +39,50 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv = __importStar(require("dotenv"));
 const pg_1 = require("pg");
 const express_1 = __importDefault(require("express"));
+const uuid_1 = require("uuid");
 dotenv.config();
 const client = new pg_1.Client({
-    connectionString: process.env.PGURI
+    connectionString: process.env.PGURI,
 });
 client.connect();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rows } = yield client.query('SELECT * FROM accounts');
+// GET
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rows } = yield client.query("SELECT * FROM accounts");
     res.send(rows);
 }));
+app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { rows } = yield client.query("SELECT * FROM accounts WHERE username=$1 AND password=$2", [req.query.username, req.query.password]);
+        // No matching user found
+        if (rows.length === 0) {
+            return res.status(401).send("Invalid username or password");
+        }
+        yield client.query('DELETE FROM tokens WHERE account_id=$1', [rows[0].id]);
+        let i = (0, uuid_1.v4)();
+        const insertResult = yield client.query("INSERT INTO tokens (account_id,token) VALUES ($1,$2) RETURNING token", [rows[0].id, i]);
+        const token = insertResult.rows[0].token;
+        res.send({ token: token });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(400).send("Internal Server Error");
+    }
+}));
+// POST
+app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const insertAccount = yield client.query("INSERT INTE accounts (email,username,password) VALUES ($1,$2,$3)", [req.query.email, req.query.username, req.query.password]);
+        res.status(201).send("Created account!");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send("Error");
+    }
+}));
+// DELETE
+// LISTEN
 app.listen(3000, () => {
     console.log("Ready for database");
 });

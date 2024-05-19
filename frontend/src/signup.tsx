@@ -9,7 +9,9 @@ const signup = () => {
         <input type="text" placeholder="EMAIL" />
         <input type="text" placeholder="USERNAME" />
         <input type="password" placeholder="PASSWORD" />
-        <button className="createAccBtn">Create account</button>
+        <a className="createAccBtn" href="/remaining">
+          Create account
+        </a>
         <a href="/">BACK</a>
       </main>
     </>
