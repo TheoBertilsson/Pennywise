@@ -226,7 +226,7 @@ body {
 /*  Footer  */
 footer {
   bottom: 0;
-  position:sticky;
+  position: sticky;
   height: 60px;
   /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
   border-top: solid 4px transparent;
@@ -286,7 +286,7 @@ footer a {
 }
 
 /*  BudgetSite.tsx */
-.budgetBox{
+.budgetBox {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -309,15 +309,28 @@ footer a {
   background-clip: content-box, border-box;
   font-size: 20px;
 }
-.chartBox{
+.budgetIncome{
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+    border: solid 4px transparent;
+    border-radius: 12px;
+    background-image: linear-gradient(white, white),
+      linear-gradient(to left, #dd64b4, #ffd700);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    font-size: 20px;
+}
+.chartBox {
   width: 300px;
   height: 16vh;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-bottom: solid 2px rgba(0, 0, 0,0.5);
 }
-.categorieBudget{
+.categorieBudget {
   width: 165px;
   height: 20vh;
   display: flex;
@@ -325,7 +338,7 @@ footer a {
   justify-content: space-around;
   align-items: center;
 }
-.categorieTotal{
+.categorieTotal {
   float: right;
   width: 165px;
   height: 20vh;
@@ -334,12 +347,12 @@ footer a {
   justify-content: space-around;
   align-items: center;
 }
-.categorieBox{
+.categorieBox {
   display: flex;
   margin-top: 5vh;
   justify-content: center;
 }
-.monthBox{
+.monthBox {
   margin: 1vh;
   height: 40px;
   width: 263px;
@@ -350,6 +363,54 @@ footer a {
   border-radius: 12px;
   font-size: 18px;
 }
-.bi{
+.bi {
   cursor: pointer;
+}
+
+/*  Add Item Box  */
+.addItemBtn {
+  width: 200px;
+  margin-bottom: 1vh;
+  font-size: 25px;
+  padding: 10px;
+  border: none;
+  background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
+  border-radius: 12px;
+  box-shadow: 1px 2px 2px rgb(76, 76, 76);
+}
+.addItemBtn:active {
+  box-shadow: none;
+}
+.additemBox {
+  margin-bottom: 4vh;
+  width: 350px;
+  height: 250px;
+  transform: translateY(4%);
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  top: 29%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+  border: solid 4px transparent;
+  border-radius: 12px;
+  background-image: linear-gradient(white, white),
+    linear-gradient(to left, #dd64b4, #ffd700);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+.additemBox span{
+  font-size: 30px;
+  text-align: center;
+  margin: 2vh;
+}
+.additemBox button{
+  font-size: 25px;
+  background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 1px 2px 2px rgb(76, 76, 76);
 }

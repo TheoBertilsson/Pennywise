@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/budget",
+    path: "/budget/:token",
     element: <Budget />,
   },
   {

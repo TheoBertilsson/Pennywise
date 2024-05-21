@@ -17,7 +17,7 @@ const login = () => {
       setLoginFailed(true);
     } else {
       setLoginFailed(false);
-      navigate(`/budget?token=${loginResult}`);
+      navigate(`/budget/${loginResult}`);
     }
   };
 

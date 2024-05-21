@@ -53,10 +53,29 @@ app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rows } = yield client.query("SELECT * FROM accounts");
     res.send(rows);
 }));
+app.get('/authenticate', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { token } = req.body;
+        if (!token) {
+            return res.status(401).send("Invalid token");
+        }
+        const { rows } = yield client.query("SELECT * FROM tokens WHERE token=$1", [token]);
+        res.send(rows);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(400).send("Internal Server Error");
+    }
+    // database.all("SELECT * FROM tokens WHERE token=?",[req.query.token])
+    // .then((tokenId)=>{
+    //   res.send(tokenId);
+    // }).catch(()=>{
+    //   res.status(400).end;
+    // })
+}));
 app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rows } = yield client.query("SELECT * FROM accounts WHERE username=$1 AND password=$2", [req.query.username, req.query.password]);
-        // No matching user found
         if (rows.length === 0) {
             return res.status(401).send("Invalid username or password");
         }
@@ -80,6 +99,19 @@ app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const insertAccount = yield client.query("INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)", [email, username, password]);
         res.status(201).send("Created account!");
+    }
+    catch (error) {
+        console.error("Error executing query", error);
+        res.status(400).send("Error");
+    }
+}));
+app.post("/addBudget", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { item, cost, monthly, category } = req.body;
+        if (!item || !cost || !category) {
+            return res.status(400).send("Missing item, cost, or category");
+        }
+        const insertBudget = yield client.query("INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4", [item, cost, monthly, category]);
     }
     catch (error) {
         console.error("Error executing query", error);

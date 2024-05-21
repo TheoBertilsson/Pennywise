@@ -34,7 +34,7 @@ const signup = () => {
   const handleLogin = async () => {
     const loginResult = await loginFunc(createUserName, createPassword);
     if (loginResult) {
-      navigate(`/budget?token=${loginResult}`);
+      navigate(`/budget/${loginResult}`);
     }
   };
   return (
