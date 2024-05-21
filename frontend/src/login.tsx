@@ -1,36 +1,26 @@
 import { useState } from "react";
+import { loginFunc } from "./util/loginFunc";
+import { useNavigate } from "react-router-dom";
+
 
 const login = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginFailed, setLoginFailed] = useState(false);
-  function login() {
-    fetch(
-      "http://localhost:3000/login?username=" +
-        userName +
-        "&password=" +
-        password +
-        ""
-    )
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return response.text().then((text) => {
-            throw new Error(text || response.statusText);
-          });
-        }
-      })
-      .then((result) => {
-        setLoginFailed(false);
-        console.log(result.token);
-        // router.push(`/list/${result.token}`);
-      })
-      .catch((error) => {
-        console.log("Fetch error: " + error);
-        setLoginFailed(true);
-      });
-  }
+
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loginFailed, setLoginFailed] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    const loginResult = await loginFunc(userName, password);
+    if (!loginResult) {
+      setLoginFailed(true);
+    } else {
+      setLoginFailed(false);
+      navigate(`/budget?token=${loginResult}`);
+    }
+  };
+
   return (
     <>
       <header className="headerSignup">
@@ -49,7 +39,7 @@ const login = () => {
           onChange={(event) => setPassword(event.target.value)}
         />
         {loginFailed === true && <p className="errorLogin">Login Failed</p>}
-        <a className="createAccBtn" onClick={login}>
+        <a className="createAccBtn" onClick={handleLogin}>
           LOGIN
         </a>
         <a href="/">BACK</a>

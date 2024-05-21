@@ -46,6 +46,7 @@ const client = new pg_1.Client({
 });
 client.connect();
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // GET
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -59,7 +60,7 @@ app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (rows.length === 0) {
             return res.status(401).send("Invalid username or password");
         }
-        yield client.query('DELETE FROM tokens WHERE account_id=$1', [rows[0].id]);
+        yield client.query("DELETE FROM tokens WHERE account_id=$1", [rows[0].id]);
         let i = (0, uuid_1.v4)();
         const insertResult = yield client.query("INSERT INTO tokens (account_id,token) VALUES ($1,$2) RETURNING token", [rows[0].id, i]);
         const token = insertResult.rows[0].token;
@@ -73,16 +74,21 @@ app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // POST
 app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const insertAccount = yield client.query("INSERT INTE accounts (email,username,password) VALUES ($1,$2,$3)", [req.query.email, req.query.username, req.query.password]);
+        const { email, username, password } = req.body;
+        if (!email || !username || !password) {
+            return res.status(400).send("Missing email, username, or password");
+        }
+        const insertAccount = yield client.query("INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)", [email, username, password]);
         res.status(201).send("Created account!");
     }
     catch (error) {
-        console.log(error);
+        console.error("Error executing query", error);
         res.status(400).send("Error");
     }
 }));
 // DELETE
 // LISTEN
-app.listen(3000, () => {
-    console.log("Ready for database");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

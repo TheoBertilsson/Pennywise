@@ -13,7 +13,7 @@ const client = new Client({
 client.connect();
 
 const app = express();
-
+app.use(express.json());
 app.use(cors());
 // GET
 app.get("/", async (req, res) => {
@@ -31,14 +31,14 @@ app.get("/login", async (req, res) => {
     if (rows.length === 0) {
       return res.status(401).send("Invalid username or password");
     }
-    await client.query('DELETE FROM tokens WHERE account_id=$1',[rows[0].id])
+    await client.query("DELETE FROM tokens WHERE account_id=$1", [rows[0].id]);
     let i = uuidv4();
     const insertResult = await client.query(
       "INSERT INTO tokens (account_id,token) VALUES ($1,$2) RETURNING token",
       [rows[0].id, i]
     );
     const token = insertResult.rows[0].token;
-    res.send({token:token});
+    res.send({ token: token });
   } catch (error) {
     console.error(error);
     res.status(400).send("Internal Server Error");
@@ -48,18 +48,26 @@ app.get("/login", async (req, res) => {
 // POST
 app.post("/signup", async (req, res) => {
   try {
+    const { email, username, password } = req.body;
+
+    if (!email || !username || !password) {
+      return res.status(400).send("Missing email, username, or password");
+    }
+
     const insertAccount = await client.query(
-      "INSERT INTE accounts (email,username,password) VALUES ($1,$2,$3)",
-      [req.query.email, req.query.username, req.query.password]
+      "INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)",
+      [email, username, password]
     );
+
     res.status(201).send("Created account!");
   } catch (error) {
-    console.log(error);
+    console.error("Error executing query", error);
     res.status(400).send("Error");
   }
 });
 // DELETE
 // LISTEN
-app.listen(3000, () => {
-  console.log("Ready for database");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

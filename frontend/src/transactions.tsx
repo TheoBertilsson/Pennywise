@@ -1,8 +1,10 @@
-
+import Budget from "./components/budget"
 
 const transactions = () => {
   return (
-    <div>transactions</div>
+    <>
+        <Budget/>
+    </>
   )
 }
 

@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./Home.tsx";
 import Signup from "./signup.tsx";
 import Login from "./login.tsx";
-import Remaining from "./remainingBudget.tsx";
 import Budget from "./budgetSite.tsx";
 import Insight from "./insight.tsx";
 import Transactions from "./transactions.tsx";
@@ -25,19 +24,15 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/remaining",
-    element: <Remaining />,
-  },
-  {
     path: "/budget",
     element: <Budget />,
   },
   {
-    path: "/insights",
+    path: "/insight",
     element: <Insight />,
   },
   {
-    path: "/transactions",
+    path: "/transaction",
     element: <Transactions />,
   },
   {

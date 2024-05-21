@@ -285,7 +285,7 @@ footer a {
   border-radius: 20px;
 }
 
-/*  Remaining.tsx */
+/*  BudgetSite.tsx */
 .budgetBox{
   display: flex;
   flex-direction: column;
@@ -349,4 +349,7 @@ footer a {
   align-items: center;
   border-radius: 12px;
   font-size: 18px;
+}
+.bi{
+  cursor: pointer;
 }
