@@ -21,25 +21,22 @@ app.get("/", async (req, res) => {
   res.send(rows);
 });
 
-app.get('/authenticate', async (req,res) => {
+app.get("/authenticate", async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token } = req.query;
     if (!token) {
       return res.status(401).send("Invalid token");
     }
-    const {rows} = await client.query("SELECT * FROM tokens WHERE token=$1",[token])
-    res.send(rows)
+    const { rows } = await client.query("SELECT * FROM tokens WHERE token=$1", [
+      token,
+    ]);
+    console.log(rows);
+    res.send(rows);
   } catch (error) {
     console.error(error);
     res.status(400).send("Internal Server Error");
   }
-  // database.all("SELECT * FROM tokens WHERE token=?",[req.query.token])
-  // .then((tokenId)=>{
-  //   res.send(tokenId);
-  // }).catch(()=>{
-  //   res.status(400).end;
-  // })
-})
+});
 
 app.get("/login", async (req, res) => {
   try {
@@ -87,15 +84,15 @@ app.post("/signup", async (req, res) => {
 
 app.post("/addBudget", async (req, res) => {
   try {
-    const { item, cost, monthly, category } = req.body;
-
-    if (!item || !cost || !category) {
+    const { account_id, item, cost, monthly, category } = req.body;
+    if (!account_id || !item || !cost || !category) {
       return res.status(400).send("Missing item, cost, or category");
     }
     const insertBudget = await client.query(
-      "INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4",
-      [item, cost, monthly, category]
+      "INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4, $5)",
+      [account_id, item, cost, monthly, category]
     );
+    res.send("Created item")
   } catch (error) {
     console.error("Error executing query", error);
     res.status(400).send("Error");

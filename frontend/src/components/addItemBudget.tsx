@@ -1,36 +1,46 @@
 import { useState } from "react";
-const addItemBudget = () => {
+interface addItemProp {
+  id: number;
+}
+const addItemBudget = (props: addItemProp) => {
   const [item, setItem] = useState<string>("");
   const [cost, setCost] = useState<string>("");
   const [isMonthly, setIsMonthly] = useState<boolean>(false);
   const [showAddItem, setShowAddItem] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("housing");
   const handleSubmit = (e: any) => {
+    console.log(props.id);
     e.preventDefault();
-    // Add item logic
-    setShowAddItem(false);
-    fetch("http://localhost:3000/addBudget", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        item: item,
-        cost: cost,
-        monthly: isMonthly,
-        category: category,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Created budget item");
-        } else {
-          console.error("Error:", response.statusText);
-        }
+
+    if (!item || !cost || !category) {
+      console.log("error");
+    } else {
+      fetch("http://localhost:3000/addBudget", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          account_id: props.id,
+          item: item,
+          cost: cost,
+          monthly: isMonthly,
+          category: category,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => {
+          if (response.ok) {
+            console.log("Created budget item");
+          } else {
+            console.error("Error:", response.statusText);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      setShowAddItem(false);
+    }
+
     console.log({ item, cost, isMonthly, category });
   };
   const handleClick = () => {
@@ -92,7 +102,7 @@ const addItemBudget = () => {
             >
               <option value="housing">Housing</option>
               <option value="food">Food</option>
-              <option value="lifestyle">Lifestyle</option>
+              <option value="vehicle">Vehicle</option>
               <option value="sub">Subscription</option>
               <option value="hobby">Hobby</option>
               <option value="savings">Savings</option>

@@ -8,7 +8,6 @@ const transactions = () => {
     <>
         <Budget/>
         <MonthBar/>
-        <AddItemBudget/>
         <Footer/>
     </>
   )
