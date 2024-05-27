@@ -1,6 +1,7 @@
 import { useState } from "react";
 interface addItemProp {
   id: number;
+  getTotal: any;
 }
 const addItemBudget = (props: addItemProp) => {
   const [item, setItem] = useState<string>("");
@@ -31,6 +32,10 @@ const addItemBudget = (props: addItemProp) => {
         .then((response) => {
           if (response.ok) {
             console.log("Created budget item");
+            props.getTotal();
+            setItem("");
+            setCost("");
+            setIsMonthly(false);
           } else {
             console.error("Error:", response.statusText);
           }

@@ -6,7 +6,7 @@ import Footer from "./components/footer";
 const transactions = () => {
   return (
     <>
-        <Budget/>
+        <Budget />
         <MonthBar/>
         <Footer/>
     </>

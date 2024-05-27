@@ -7,7 +7,6 @@ export async function loginFunc(userName:string, password:string) {
         const result = await response.json();
         console.log(result.token);
         return (result.token);
-        // router.push(`/list/${result.token}`);
       } else {
         const text = await response.text();
         throw new Error(text || response.statusText);

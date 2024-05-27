@@ -61,6 +61,81 @@ app.get("/login", async (req, res) => {
   }
 });
 
+app.get("/getTotal", async (req, res) => {
+  try {
+    const { id, month, day } = req.query;
+    if (!id) {
+      return res.status(401).send("Invalid id");
+    }
+
+    const monthNumber = Number(month)
+    const dayNumber = Number(day);
+    if (dayNumber > 24) {
+      let nextMonthNumber;
+      let thisMonthString;
+      let nextMonthString;
+      if (monthNumber === 12) {
+        nextMonthNumber = 1;
+        nextMonthString = "01";
+      } else {
+        nextMonthNumber = monthNumber + 1;
+        nextMonthString = nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
+      }
+
+      thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+      const startDate = `2024-${thisMonthString}-25`;
+      const endDate = `2024-${nextMonthString}-25`;
+
+      const { rows } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3",
+        [id, startDate, endDate]
+      );
+      return res.send(rows);
+    } else if(dayNumber < 25) {
+      let lastMonthNumber,thisMonthString,lastmonthString;
+      if (monthNumber === 1){
+        lastMonthNumber = 12;
+        lastmonthString="12"
+      } else {
+        lastMonthNumber = monthNumber - 1;
+        lastmonthString = lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`
+      }
+      thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+
+      const startDate = `2024-${lastmonthString}-25`;
+      const endDate = `2024-${thisMonthString}-24`;
+
+      const { rows } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3",
+        [id, startDate, endDate]
+      );
+      return res.send(rows);
+    }
+
+    res.status(400).send("Invalid day value");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.get("/getHousing", async (req, res) => {
+  try {
+    const { id } = req.query;
+    if (!id) {
+      return res.status(401).send("Invalid id");
+    }
+    const { rows } = await client.query(
+      "SELECT * FROM budget WHERE account_id=$1 AND category='housing'",
+      [id]
+    );
+    res.send(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Internal Server Error");
+  }
+});
 // POST
 app.post("/signup", async (req, res) => {
   try {
@@ -92,7 +167,7 @@ app.post("/addBudget", async (req, res) => {
       "INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4, $5)",
       [account_id, item, cost, monthly, category]
     );
-    res.send("Created item")
+    res.send("Created item");
   } catch (error) {
     console.error("Error executing query", error);
     res.status(400).send("Error");

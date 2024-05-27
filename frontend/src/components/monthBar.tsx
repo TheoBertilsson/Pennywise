@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 
+interface monthProp {
+  getTotal: any;
+  setStartMonth: any;
+  setEndMonth: any;
+}
 const monthNames: string[] = [
   "January",
   "February",
@@ -16,8 +21,8 @@ const monthNames: string[] = [
   "December",
 ];
 
-const monthBar = () => {
-  const [month, setMonth] = useState<number>(new Date().getMonth()); // Initialize with the current month
+const monthBar = (props: monthProp) => {
+  const [month, setMonth] = useState<number>(new Date().getMonth());
   const [monthOne, setMonthOne] = useState<string>("");
   const [monthTwo, setMonthTwo] = useState<string>("");
   const date: Date = new Date();
@@ -27,9 +32,15 @@ const monthBar = () => {
     if (day < 25) {
       setMonthOne(monthNames[(month - 1 + 12) % 12]);
       setMonthTwo(monthNames[month]);
+      props.setStartMonth((month - 1 + 12) % 12);
+      props.setEndMonth(month);
+      props.getTotal();
     } else {
       setMonthOne(monthNames[month]);
       setMonthTwo(monthNames[(month + 1) % 12]);
+      props.setStartMonth(month);
+      props.setEndMonth((month + 1) % 12);
+      props.getTotal();
     }
   }, [month, date]);
 
