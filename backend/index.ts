@@ -30,7 +30,6 @@ app.get("/authenticate", async (req, res) => {
     const { rows } = await client.query("SELECT * FROM tokens WHERE token=$1", [
       token,
     ]);
-    console.log(rows);
     res.send(rows);
   } catch (error) {
     console.error(error);
@@ -68,7 +67,7 @@ app.get("/getTotal", async (req, res) => {
       return res.status(401).send("Invalid id");
     }
 
-    const monthNumber = Number(month)
+    const monthNumber = Number(month);
     const dayNumber = Number(day);
     if (dayNumber > 24) {
       let nextMonthNumber;
@@ -79,37 +78,49 @@ app.get("/getTotal", async (req, res) => {
         nextMonthString = "01";
       } else {
         nextMonthNumber = monthNumber + 1;
-        nextMonthString = nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
+        nextMonthString =
+          nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
       }
 
       thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
       const startDate = `2024-${thisMonthString}-25`;
       const endDate = `2024-${nextMonthString}-25`;
 
-      const { rows } = await client.query(
-        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3",
+      const { rows: totalItems } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE",
         [id, startDate, endDate]
       );
-      return res.send(rows);
-    } else if(dayNumber < 25) {
-      let lastMonthNumber,thisMonthString,lastmonthString;
-      if (monthNumber === 1){
+      const { rows: monthlyItems } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2",
+        [id, endDate]
+      );
+      const combinedResults = [...totalItems, ...monthlyItems];
+      return res.send(combinedResults);
+    } else if (dayNumber < 25) {
+      let lastMonthNumber, thisMonthString, lastmonthString;
+      if (monthNumber === 1) {
         lastMonthNumber = 12;
-        lastmonthString="12"
+        lastmonthString = "12";
       } else {
         lastMonthNumber = monthNumber - 1;
-        lastmonthString = lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`
+        lastmonthString =
+          lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`;
       }
       thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
 
       const startDate = `2024-${lastmonthString}-25`;
       const endDate = `2024-${thisMonthString}-24`;
 
-      const { rows } = await client.query(
-        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3",
+      const { rows: totalItems } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE",
         [id, startDate, endDate]
       );
-      return res.send(rows);
+      const { rows: monthlyItems } = await client.query(
+        "SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2",
+        [id, endDate]
+      );
+      const combinedResults = [...totalItems, ...monthlyItems];
+      return res.send(combinedResults);
     }
 
     res.status(400).send("Invalid day value");
@@ -119,23 +130,6 @@ app.get("/getTotal", async (req, res) => {
   }
 });
 
-
-app.get("/getHousing", async (req, res) => {
-  try {
-    const { id } = req.query;
-    if (!id) {
-      return res.status(401).send("Invalid id");
-    }
-    const { rows } = await client.query(
-      "SELECT * FROM budget WHERE account_id=$1 AND category='housing'",
-      [id]
-    );
-    res.send(rows);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send("Internal Server Error");
-  }
-});
 // POST
 app.post("/signup", async (req, res) => {
   try {
@@ -159,13 +153,14 @@ app.post("/signup", async (req, res) => {
 
 app.post("/addBudget", async (req, res) => {
   try {
-    const { account_id, item, cost, monthly, category } = req.body;
+    const { account_id, item, cost, monthly, category, month } = req.body;
+    const date = `2024-${month}-24 12:00:00`;
     if (!account_id || !item || !cost || !category) {
       return res.status(400).send("Missing item, cost, or category");
     }
     const insertBudget = await client.query(
-      "INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4, $5)",
-      [account_id, item, cost, monthly, category]
+      "INSERT INTO budget  (account_id, item, cost, monthly, category, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
+      [account_id, item, cost, monthly, category, date]
     );
     res.send("Created item");
   } catch (error) {
@@ -174,6 +169,38 @@ app.post("/addBudget", async (req, res) => {
   }
 });
 // DELETE
+app.delete("/removeItem", async (req, res) => {
+  try {
+    const { id, item_id } = req.body;
+    if (!id || !item_id) {
+      return res.status(400).send("Missing item or ID");
+    }
+    const deleteBudget = await client.query(
+      "DELETE FROM budget WHERE account_id=$1 AND id=$2",
+      [id, item_id]
+    );
+    res.send("Removed item");
+  } catch (error) {
+    console.error("Error executing query", error);
+    res.status(400).send("Error");
+  }
+});
+
+app.delete("/logout", async (req,res) => {
+  try {
+    const{token} = req.body;
+    if (!token){
+      return res.status(400).send("Missing Token")
+    }
+    const logout = await client.query(
+      "DELETE FROM tokens WHERE token=$1",[token]
+    );
+    res.send("Logged out")
+  } catch (error) {
+    console.error("Error executing query", error);
+    res.status(400).send("Error");
+  }
+})
 // LISTEN
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

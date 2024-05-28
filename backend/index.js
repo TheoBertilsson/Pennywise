@@ -62,7 +62,6 @@ app.get("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { rows } = yield client.query("SELECT * FROM tokens WHERE token=$1", [
             token,
         ]);
-        console.log(rows);
         res.send(rows);
     }
     catch (error) {
@@ -105,13 +104,16 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
             }
             else {
                 nextMonthNumber = monthNumber + 1;
-                nextMonthString = nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
+                nextMonthString =
+                    nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
             }
             thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
             const startDate = `2024-${thisMonthString}-25`;
             const endDate = `2024-${nextMonthString}-25`;
-            const { rows } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3", [id, startDate, endDate]);
-            return res.send(rows);
+            const { rows: totalItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE", [id, startDate, endDate]);
+            const { rows: monthlyItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2", [id, endDate]);
+            const combinedResults = [...totalItems, ...monthlyItems];
+            return res.send(combinedResults);
         }
         else if (dayNumber < 25) {
             let lastMonthNumber, thisMonthString, lastmonthString;
@@ -121,33 +123,22 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
             }
             else {
                 lastMonthNumber = monthNumber - 1;
-                lastmonthString = lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`;
+                lastmonthString =
+                    lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`;
             }
             thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
             const startDate = `2024-${lastmonthString}-25`;
             const endDate = `2024-${thisMonthString}-24`;
-            const { rows } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3", [id, startDate, endDate]);
-            return res.send(rows);
+            const { rows: totalItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE", [id, startDate, endDate]);
+            const { rows: monthlyItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2", [id, endDate]);
+            const combinedResults = [...totalItems, ...monthlyItems];
+            return res.send(combinedResults);
         }
         res.status(400).send("Invalid day value");
     }
     catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
-    }
-}));
-app.get("/getHousing", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.query;
-        if (!id) {
-            return res.status(401).send("Invalid id");
-        }
-        const { rows } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND category='housing'", [id]);
-        res.send(rows);
-    }
-    catch (error) {
-        console.error(error);
-        res.status(400).send("Internal Server Error");
     }
 }));
 // POST
@@ -167,11 +158,12 @@ app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 app.post("/addBudget", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { account_id, item, cost, monthly, category } = req.body;
+        const { account_id, item, cost, monthly, category, month } = req.body;
+        const date = `2024-${month}-24 12:00:00`;
         if (!account_id || !item || !cost || !category) {
             return res.status(400).send("Missing item, cost, or category");
         }
-        const insertBudget = yield client.query("INSERT INTO budget  (account_id, item, cost, monthly, category) VALUES ($1, $2, $3, $4, $5)", [account_id, item, cost, monthly, category]);
+        const insertBudget = yield client.query("INSERT INTO budget  (account_id, item, cost, monthly, category, created_at) VALUES ($1, $2, $3, $4, $5, $6)", [account_id, item, cost, monthly, category, date]);
         res.send("Created item");
     }
     catch (error) {
@@ -180,6 +172,34 @@ app.post("/addBudget", (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 }));
 // DELETE
+app.delete("/removeItem", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id, item_id } = req.body;
+        if (!id || !item_id) {
+            return res.status(400).send("Missing item or ID");
+        }
+        const deleteBudget = yield client.query("DELETE FROM budget WHERE account_id=$1 AND id=$2", [id, item_id]);
+        res.send("Removed item");
+    }
+    catch (error) {
+        console.error("Error executing query", error);
+        res.status(400).send("Error");
+    }
+}));
+app.delete("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { token } = req.body;
+        if (!token) {
+            return res.status(400).send("Missing Token");
+        }
+        const logout = yield client.query("DELETE FROM tokens WHERE token=$1", [token]);
+        res.send("Logged out");
+    }
+    catch (error) {
+        console.error("Error executing query", error);
+        res.status(400).send("Error");
+    }
+}));
 // LISTEN
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
