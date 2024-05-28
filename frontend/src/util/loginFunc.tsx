@@ -1,7 +1,7 @@
 export async function loginFunc(userName:string, password:string) {
     try {
       const response = await fetch(
-        `/login?username=${userName}&password=${password}`
+        `/loginAccount?username=${userName}&password=${password}`
       );
       if (response.ok) {
         const result = await response.json();

@@ -18,7 +18,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(path.resolve(), "dist")));
+
 // GET
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+});
 app.get("/authenticate", async (req, res) => {
   try {
     const { token } = req.query;
@@ -35,7 +39,7 @@ app.get("/authenticate", async (req, res) => {
   }
 });
 
-app.get("/login", async (req, res) => {
+app.get("/loginAccount", async (req, res) => {
   try {
     const { rows } = await client.query(
       "SELECT * FROM accounts WHERE username=$1 AND password=$2",
