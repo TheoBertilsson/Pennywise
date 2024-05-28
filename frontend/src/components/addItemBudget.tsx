@@ -19,7 +19,7 @@ const addItemBudget = (props: addItemProp) => {
     } else {
         const month = props.endMonth + 1;
         const createdMonth = month < 10 ? `0${month}` : `${month}`
-      fetch("http://localhost:3000/addBudget", {
+      fetch("/addBudget", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

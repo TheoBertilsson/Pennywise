@@ -40,6 +40,7 @@ const dotenv = __importStar(require("dotenv"));
 const pg_1 = require("pg");
 const express_1 = __importDefault(require("express"));
 const uuid_1 = require("uuid");
+const path = __importStar(require("path"));
 dotenv.config();
 const client = new pg_1.Client({
     connectionString: process.env.PGURI,
@@ -48,11 +49,8 @@ client.connect();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+app.use(express_1.default.static(path.join(path.resolve(), "dist")));
 // GET
-app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rows } = yield client.query("SELECT * FROM accounts");
-    res.send(rows);
-}));
 app.get("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { token } = req.query;
@@ -141,6 +139,9 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).send("Internal Server Error");
     }
 }));
+app.get("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.send();
+}));
 // POST
 app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -192,7 +193,9 @@ app.delete("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!token) {
             return res.status(400).send("Missing Token");
         }
-        const logout = yield client.query("DELETE FROM tokens WHERE token=$1", [token]);
+        const logout = yield client.query("DELETE FROM tokens WHERE token=$1", [
+            token,
+        ]);
         res.send("Logged out");
     }
     catch (error) {

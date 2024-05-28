@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import { Client } from "pg";
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
+import * as path from "path";
 
 dotenv.config();
 
@@ -13,14 +14,11 @@ const client = new Client({
 client.connect();
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(path.resolve(), "dist")));
 // GET
-app.get("/", async (req, res) => {
-  const { rows } = await client.query("SELECT * FROM accounts");
-  res.send(rows);
-});
-
 app.get("/authenticate", async (req, res) => {
   try {
     const { token } = req.query;
@@ -186,21 +184,21 @@ app.delete("/removeItem", async (req, res) => {
   }
 });
 
-app.delete("/logout", async (req,res) => {
+app.delete("/logout", async (req, res) => {
   try {
-    const{token} = req.body;
-    if (!token){
-      return res.status(400).send("Missing Token")
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).send("Missing Token");
     }
-    const logout = await client.query(
-      "DELETE FROM tokens WHERE token=$1",[token]
-    );
-    res.send("Logged out")
+    const logout = await client.query("DELETE FROM tokens WHERE token=$1", [
+      token,
+    ]);
+    res.send("Logged out");
   } catch (error) {
     console.error("Error executing query", error);
     res.status(400).send("Error");
   }
-})
+});
 // LISTEN
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

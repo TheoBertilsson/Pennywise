@@ -1,6 +1,6 @@
 export async function logoutFunc(token:string) {
     try {
-        const response = await fetch("http://localhost:3000/logout", {
+        const response = await fetch("/logout", {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",

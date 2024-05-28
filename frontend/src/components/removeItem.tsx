@@ -14,7 +14,7 @@ const removeItem = (props: removeItemProp) => {
   const [showRemoveItem, setShowRemoveItem] = useState<boolean>(false);
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:3000/removeItem", {
+      const response = await fetch("/removeItem", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const removeItem = (props: removeItemProp) => {
     try {
       const thisMonth = props.endMonth;
       const response = await fetch(
-        `http://localhost:3000/getTotal?id=${props.id}&month=${thisMonth}&day=${day}`
+        `/getTotal?id=${props.id}&month=${thisMonth}&day=${day}`
       );
       if (response.ok) {
         const result = await response.json();

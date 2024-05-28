@@ -1,7 +1,7 @@
 export async function authenticate(token:string) {
         try {
             const response = await fetch(
-              `http://localhost:3000/authenticate?token=${token}`
+              `/authenticate?token=${token}`
             );
             if (response.ok) {
               const result = await response.json();

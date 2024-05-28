@@ -8,7 +8,7 @@ const signup = () => {
   const [createPassword, setCreatePassword] = useState("");
   const navigate = useNavigate();
   function createAccount() {
-    fetch("http://localhost:3000/signup", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
