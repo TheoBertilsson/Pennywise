@@ -1,10 +1,8 @@
-import Budgetheader from "./components/budget";
 import Footer from "./components/footer";
 
 const insight = () => {
   return (
     <>
-      <Budgetheader />
       <main className="budgetBox">
         <div className="monthBox">
           <span>&lt;-</span>
@@ -18,7 +16,7 @@ const insight = () => {
           </div>
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </>
   );
 };

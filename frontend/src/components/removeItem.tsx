@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { X } from "react-bootstrap-icons";
 
 interface removeItemProp {
@@ -75,7 +75,8 @@ const removeItem = (props: removeItemProp) => {
 
       {showRemoveItem && (
         <div className="removeitemBox">
-          <X className="closeBtn"
+          <X
+            className="closeBtn"
             onClick={() => {
               setShowRemoveItem(false);
             }}
