@@ -65,7 +65,7 @@ body {
   width: 50px;
   height: 50px;
   position: absolute;
-  left:10%;
+  left: 10%;
   margin-top: 5px;
 }
 .spending span,
@@ -284,14 +284,14 @@ footer a {
   padding: 8px;
   border-radius: 20px;
 }
-#currencyChoice{
+#currencyChoice {
   position: absolute;
-  top:2.5vh;
+  top: 2.5vh;
   right: 2.5vh;
   border: 1px solid black;
   border-radius: 4px;
 }
-.loguoutBtn{
+.loguoutBtn {
   position: absolute;
   top: 2.5vh;
   left: 5vh;
@@ -322,19 +322,19 @@ footer a {
   background-clip: content-box, border-box;
   font-size: 20px;
 }
-.budgetIncome{
+.budgetIncome {
   width: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
-    /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
-    border: solid 4px transparent;
-    border-radius: 12px;
-    background-image: linear-gradient(white, white),
-      linear-gradient(to left, #dd64b4, #ffd700);
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-    font-size: 20px;
+  /*  Border css from https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0  */
+  border: solid 4px transparent;
+  border-radius: 12px;
+  background-image: linear-gradient(white, white),
+    linear-gradient(to left, #dd64b4, #ffd700);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  font-size: 20px;
 }
 .chartBox {
   margin-top: 2vh;
@@ -396,7 +396,8 @@ footer a {
 .addItemBtn:active {
   box-shadow: none;
 }
-.additemBox, .removeitemBox {
+.additemBox,
+.removeitemBox {
   margin-bottom: 4vh;
   width: 350px;
   height: 250px;
@@ -416,12 +417,13 @@ footer a {
   background-origin: border-box;
   background-clip: content-box, border-box;
 }
-.additemBox span{
+.additemBox span {
   font-size: 30px;
   text-align: center;
   margin: 2vh;
 }
-.additemBox button, .removeitemBox button{
+.additemBox button,
+.removeitemBox button {
   font-size: 25px;
   background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
   border: none;
@@ -429,41 +431,40 @@ footer a {
   border-radius: 12px;
   box-shadow: 1px 2px 2px rgb(76, 76, 76);
 }
-.removeitemBox{
+.removeitemBox {
   text-align: center;
   width: 350px;
   height: 170px;
 }
-.removeBtn{
+.removeBtn {
   text-decoration: underline;
 }
-#removeCategory{
+#removeCategory {
   display: flex;
   flex-direction: column;
   text-align: center;
   margin-top: 2vh;
 }
-.closeBtn{
+.closeBtn {
   position: absolute;
-  top:1vh;
+  top: 1vh;
   right: 1vh;
   height: 25px;
   width: 25px;
 }
 
-
 /*  MEDIA QUERY */
-@media (min-width: 700px) and (max-width:1199px){
+@media (min-width: 700px) and (max-width: 1199px) {
   .spending img,
   .piggy img,
   .budget img {
-    left:30%;
+    left: 30%;
   }
 }
 @media (min-width: 1200px) {
   .spending img,
-.piggy img,
-.budget img {
-  left:37%;
-}
+  .piggy img,
+  .budget img {
+    left: 37%;
+  }
 }

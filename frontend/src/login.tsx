@@ -2,9 +2,7 @@ import { useState } from "react";
 import { loginFunc } from "./util/loginFunc";
 import { useNavigate } from "react-router-dom";
 
-
 const login = () => {
-
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loginFailed, setLoginFailed] = useState<boolean>(false);

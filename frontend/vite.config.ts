@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/login': 'http://localhost:3000',
+      '/loginAccount': 'http://localhost:3000',
       '/signup': 'http://localhost:3000',
       '/removeItem': 'http://localhost:3000',
       '/getTotal': 'http://localhost:3000',

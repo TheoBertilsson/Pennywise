@@ -18,11 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(path.resolve(), "dist")));
+//  GET
 
-// GET
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-});
 app.get("/authenticate", async (req, res) => {
   try {
     const { token } = req.query;

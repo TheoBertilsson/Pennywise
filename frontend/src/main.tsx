@@ -8,41 +8,20 @@ import Insight from "./insight.tsx";
 import Transactions from "./transactions.tsx";
 import Settings from "./settings.tsx";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/budget/:token",
-    element: <Budget />,
-  },
-  {
-    path: "/insight",
-    element: <Insight />,
-  },
-  {
-    path: "/transaction",
-    element: <Transactions />,
-  },
-  {
-    path: "/settings",
-    element: <Settings />,
-  },
-]);
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/budget/:token" element={<Budget />} />
+        <Route path="/insight" element={<Insight />} />
+        <Route path="/transaction" element={<Transactions />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </HashRouter>
   </React.StrictMode>
 );

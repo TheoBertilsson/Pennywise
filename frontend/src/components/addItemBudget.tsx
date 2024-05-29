@@ -3,7 +3,7 @@ import { X } from "react-bootstrap-icons";
 interface addItemProp {
   id: number;
   getTotal: any;
-  endMonth:number;
+  endMonth: number;
 }
 const addItemBudget = (props: addItemProp) => {
   const [item, setItem] = useState<string>("");
@@ -17,8 +17,8 @@ const addItemBudget = (props: addItemProp) => {
 
     if (!item || !cost || !category) {
     } else {
-        const month = props.endMonth + 1;
-        const createdMonth = month < 10 ? `0${month}` : `${month}`
+      const month = props.endMonth + 1;
+      const createdMonth = month < 10 ? `0${month}` : `${month}`;
       fetch("/addBudget", {
         method: "POST",
         headers: {
@@ -30,7 +30,7 @@ const addItemBudget = (props: addItemProp) => {
           cost: cost,
           monthly: isMonthly,
           category: category,
-          month:createdMonth
+          month: createdMonth,
         }),
       })
         .then((response) => {
@@ -66,7 +66,8 @@ const addItemBudget = (props: addItemProp) => {
       )}
       {showAddItem && (
         <form className="additemBox" onSubmit={handleSubmit}>
-                      <X className="closeBtn"
+          <X
+            className="closeBtn"
             onClick={() => {
               setShowAddItem(false);
             }}

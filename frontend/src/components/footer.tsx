@@ -1,13 +1,13 @@
 const footer = () => {
   return (
     <>
-    <footer>
+      <footer>
         <a href="/remaining">Budget</a>
         <a href="/transactions">Transactions</a>
         <a href="/settings">Settings</a>
-    </footer>
+      </footer>
     </>
-  )
-}
+  );
+};
 
-export default footer
+export default footer;

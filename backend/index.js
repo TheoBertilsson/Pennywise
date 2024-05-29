@@ -50,7 +50,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use(express_1.default.static(path.join(path.resolve(), "dist")));
-// GET
+//  GET
 app.get("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { token } = req.query;
@@ -67,7 +67,7 @@ app.get("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(400).send("Internal Server Error");
     }
 }));
-app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/loginAccount", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rows } = yield client.query("SELECT * FROM accounts WHERE username=$1 AND password=$2", [req.query.username, req.query.password]);
         if (rows.length === 0) {
@@ -138,9 +138,6 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
-}));
-app.get("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send();
 }));
 // POST
 app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

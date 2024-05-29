@@ -21,7 +21,7 @@ const budget = (props: budgetProp) => {
   const logout = async () => {
     if (props.token !== undefined) {
       const loggingOut = await logoutFunc(props.token);
-      if(loggingOut){
+      if (loggingOut) {
         navigate(`/`);
       }
     }
@@ -40,7 +40,7 @@ const budget = (props: budgetProp) => {
       </span>
       <nav className="budgetNav">
         <a
-          href="/budget"
+          href={`#/budget/${props.token}`}
           style={pathName === "budget" ? { backgroundColor: "#e9e9e94b" } : {}}
         >
           Budget
@@ -49,13 +49,13 @@ const budget = (props: budgetProp) => {
           style={
             pathName === "transaction" ? { backgroundColor: "#e9e9e94b" } : {}
           }
-          href="/transaction"
+          href={`#/transaction/${props.token}`}
         >
           Transactions
         </a>
         <a
           style={pathName === "insight" ? { backgroundColor: "#e9e9e94b" } : {}}
-          href="/insight"
+          href={`#/insight/${props.token}`}
         >
           Insights
         </a>
