@@ -28,7 +28,7 @@ const BudgetSite = () => {
   const [income, setIncome] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [left, setLeft] = useState<number>(0);
-  const [currency, setCurrency] = useState<string>("")
+  const [currency, setCurrency] = useState<string>("");
   const month = new Date().getMonth();
   const date: Date = new Date();
   const day = date.getDate();
@@ -138,7 +138,12 @@ const BudgetSite = () => {
 
   return (
     <>
-      <Budget left={left} currency={currency} setCurrency={setCurrency} token={token}/>
+      <Budget
+        left={left}
+        currency={currency}
+        setCurrency={setCurrency}
+        token={token}
+      />
       <main className="budgetBox">
         <MonthBar
           getTotal={getTotal}
@@ -149,8 +154,10 @@ const BudgetSite = () => {
         <RemoveItem id={id} getTotal={getTotal} endMonth={endMonth} />
         <div className="budgetOutcome">
           <div className="chartBox">
-            <span>chart</span>
-            <span>{total}{currency} Total</span>
+            <span>
+              {total}
+              {currency} Total
+            </span>
           </div>
           <div className="categorieBox">
             <div className="categorieBudget">
@@ -163,20 +170,44 @@ const BudgetSite = () => {
               <span>Other {otherProcent}%</span>
             </div>
             <div className="categorieTotal">
-              <span>{housing}{currency}</span>
-              <span>{food}{currency}</span>
-              <span>{vehicle}{currency}</span>
-              <span>{hobby}{currency}</span>
-              <span>{subs}{currency}</span>
-              <span>{savings}{currency}</span>
-              <span>{other}{currency}</span>
+              <span>
+                {housing}
+                {currency}
+              </span>
+              <span>
+                {food}
+                {currency}
+              </span>
+              <span>
+                {vehicle}
+                {currency}
+              </span>
+              <span>
+                {hobby}
+                {currency}
+              </span>
+              <span>
+                {subs}
+                {currency}
+              </span>
+              <span>
+                {savings}
+                {currency}
+              </span>
+              <span>
+                {other}
+                {currency}
+              </span>
             </div>
           </div>
         </div>
         <div className="budgetIncome">
           <div className="chartBox">
             <span>INCOME</span>
-            <span>{income}{currency}</span>
+            <span>
+              {income}
+              {currency}
+            </span>
           </div>
         </div>
       </main>

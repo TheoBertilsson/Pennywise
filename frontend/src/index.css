@@ -344,6 +344,7 @@ footer a {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  text-decoration: underline;
 }
 .categorieBudget {
   width: 165px;
