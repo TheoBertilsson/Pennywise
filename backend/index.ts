@@ -139,7 +139,7 @@ app.post("/signup", async (req, res) => {
       return res.status(400).send("Missing email, username, or password");
     }
 
-    const insertAccount = await client.query(
+    await client.query(
       "INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)",
       [email, username, password]
     );
@@ -158,7 +158,7 @@ app.post("/addBudget", async (req, res) => {
     if (!account_id || !item || !cost || !category) {
       return res.status(400).send("Missing item, cost, or category");
     }
-    const insertBudget = await client.query(
+    await client.query(
       "INSERT INTO budget  (account_id, item, cost, monthly, category, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
       [account_id, item, cost, monthly, category, date]
     );
@@ -175,10 +175,10 @@ app.delete("/removeItem", async (req, res) => {
     if (!id || !item_id) {
       return res.status(400).send("Missing item or ID");
     }
-    const deleteBudget = await client.query(
-      "DELETE FROM budget WHERE account_id=$1 AND id=$2",
-      [id, item_id]
-    );
+    await client.query("DELETE FROM budget WHERE account_id=$1 AND id=$2", [
+      id,
+      item_id,
+    ]);
     res.send("Removed item");
   } catch (error) {
     console.error("Error executing query", error);
@@ -192,9 +192,7 @@ app.delete("/logout", async (req, res) => {
     if (!token) {
       return res.status(400).send("Missing Token");
     }
-    const logout = await client.query("DELETE FROM tokens WHERE token=$1", [
-      token,
-    ]);
+    await client.query("DELETE FROM tokens WHERE token=$1", [token]);
     res.send("Logged out");
   } catch (error) {
     console.error("Error executing query", error);

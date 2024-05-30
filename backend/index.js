@@ -146,7 +146,7 @@ app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (!email || !username || !password) {
             return res.status(400).send("Missing email, username, or password");
         }
-        const insertAccount = yield client.query("INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)", [email, username, password]);
+        yield client.query("INSERT INTO accounts (email, username, password) VALUES ($1, $2, $3)", [email, username, password]);
         res.status(201).send("Created account!");
     }
     catch (error) {
@@ -161,7 +161,7 @@ app.post("/addBudget", (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!account_id || !item || !cost || !category) {
             return res.status(400).send("Missing item, cost, or category");
         }
-        const insertBudget = yield client.query("INSERT INTO budget  (account_id, item, cost, monthly, category, created_at) VALUES ($1, $2, $3, $4, $5, $6)", [account_id, item, cost, monthly, category, date]);
+        yield client.query("INSERT INTO budget  (account_id, item, cost, monthly, category, created_at) VALUES ($1, $2, $3, $4, $5, $6)", [account_id, item, cost, monthly, category, date]);
         res.send("Created item");
     }
     catch (error) {
@@ -176,7 +176,10 @@ app.delete("/removeItem", (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!id || !item_id) {
             return res.status(400).send("Missing item or ID");
         }
-        const deleteBudget = yield client.query("DELETE FROM budget WHERE account_id=$1 AND id=$2", [id, item_id]);
+        yield client.query("DELETE FROM budget WHERE account_id=$1 AND id=$2", [
+            id,
+            item_id,
+        ]);
         res.send("Removed item");
     }
     catch (error) {
@@ -190,9 +193,7 @@ app.delete("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!token) {
             return res.status(400).send("Missing Token");
         }
-        const logout = yield client.query("DELETE FROM tokens WHERE token=$1", [
-            token,
-        ]);
+        yield client.query("DELETE FROM tokens WHERE token=$1", [token]);
         res.send("Logged out");
     }
     catch (error) {
