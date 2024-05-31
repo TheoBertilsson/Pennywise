@@ -18,8 +18,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/budget/:token" element={<Budget />} />
-        <Route path="/insight" element={<Insight />} />
-        <Route path="/transaction" element={<Transactions />} />
+        <Route path="/insight/:token" element={<Insight />} />
+        <Route path="/transaction/:token" element={<Transactions />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </HashRouter>

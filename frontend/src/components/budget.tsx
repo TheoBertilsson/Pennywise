@@ -35,8 +35,9 @@ const budget = (props: budgetProp) => {
     <header className="headerBudget">
       <DoorOpenFill className="loguoutBtn" onClick={logout} />
       <span>
+        Left: &nbsp;
         {props.left}
-        {props.currency} Left
+        {props.currency}
       </span>
       <nav className="budgetNav">
         <a
