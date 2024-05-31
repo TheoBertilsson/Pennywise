@@ -3,7 +3,7 @@ import { X } from "react-bootstrap-icons";
 
 interface removeItemProp {
   id: number;
-  getTotal: any;
+  getTotal (): Promise<void>;
   endMonth: number;
 }
 

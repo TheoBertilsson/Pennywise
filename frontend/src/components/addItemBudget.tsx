@@ -2,7 +2,7 @@ import { useState } from "react";
 import { X } from "react-bootstrap-icons";
 interface addItemProp {
   id: number;
-  getTotal: any;
+  getTotal(): Promise<void>;
   endMonth: number;
 }
 const addItemBudget = (props: addItemProp) => {

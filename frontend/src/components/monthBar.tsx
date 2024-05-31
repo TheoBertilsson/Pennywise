@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 
 interface monthProp {
-  getTotal: any;
-  setStartMonth: any;
-  setEndMonth: any;
+  getTotal(): Promise<void>;
+  setStartMonth(month: number): void;
+  setEndMonth(month: number): void;
 }
 const monthNames: string[] = [
   "January",

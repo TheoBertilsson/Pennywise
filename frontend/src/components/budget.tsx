@@ -5,7 +5,7 @@ import { logoutFunc } from "../util/logoutFunc";
 interface budgetProp {
   left: number;
   currency: string;
-  setCurrency: any;
+  setCurrency(currency: string): void;
   token: string | undefined;
 }
 const budget = (props: budgetProp) => {
