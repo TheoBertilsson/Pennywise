@@ -35,7 +35,6 @@ const addItemBudget = (props: addItemProp) => {
       })
         .then((response) => {
           if (response.ok) {
-            console.log("Created budget item");
             props.getTotal();
             setItem("");
             setCost("");
@@ -49,8 +48,6 @@ const addItemBudget = (props: addItemProp) => {
         });
       setShowAddItem(false);
     }
-
-    console.log({ item, cost, isMonthly, category });
   };
   const handleClick = () => {
     if (!showAddItem) {

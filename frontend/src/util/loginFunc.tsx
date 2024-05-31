@@ -5,7 +5,6 @@ export async function loginFunc(userName:string, password:string) {
       );
       if (response.ok) {
         const result = await response.json();
-        console.log(result.token);
         return (result.token);
       } else {
         const text = await response.text();

@@ -105,7 +105,6 @@ const transactions = () => {
       );
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
 
         setItems(result);
       } else {
@@ -125,7 +124,6 @@ const transactions = () => {
   useEffect(() => {
     if (id !== 0) {
       getTotal();
-      getItems();
     }
   }, [id]);
   return (
