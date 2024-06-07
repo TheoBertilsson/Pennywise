@@ -37,7 +37,7 @@ const transactions = () => {
 
   const getTotal = async () => {
     if (id === 0) return;
-    const totalResult = await getTotalFunc(id, startMonth, day);
+    const totalResult = await getTotalFunc(id, startMonth);
     const totalCost = totalResult
       .filter((item: any) => item.category !== "income")
       .reduce((sum: number, item: any) => sum + item.cost, 0);
