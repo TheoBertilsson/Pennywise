@@ -30,8 +30,6 @@ const BudgetSite = () => {
   const [left, setLeft] = useState<number>(0);
   const [currency, setCurrency] = useState<string>("");
   const month = new Date().getMonth();
-  const date: Date = new Date();
-  const day = date.getDate();
   const [startMonth, setStartMonth] = useState<number>(month);
   const [endMonth, setEndMonth] = useState<number>(month + 1);
 
@@ -44,7 +42,8 @@ const BudgetSite = () => {
 
   const getTotal = async () => {
     if (id === 0) return;
-    const totalResult = await getTotalFunc(id, startMonth, day);
+
+    const totalResult = await getTotalFunc(id, startMonth);
     const totalCost = totalResult
       .filter((item: any) => item.category !== "income")
       .reduce((sum: number, item: any) => sum + item.cost, 0);

@@ -92,6 +92,7 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         const monthNumber = Number(month);
         const dayNumber = Number(day);
+        let startDate, endDate;
         if (dayNumber > 24) {
             let nextMonthNumber;
             let thisMonthString;
@@ -106,33 +107,30 @@ app.get("/getTotal", (req, res) => __awaiter(void 0, void 0, void 0, function* (
                     nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
             }
             thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
-            const startDate = `2024-${thisMonthString}-25`;
-            const endDate = `2024-${nextMonthString}-25`;
-            const { rows: totalItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE", [id, startDate, endDate]);
-            const { rows: monthlyItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2", [id, endDate]);
-            const combinedResults = [...totalItems, ...monthlyItems];
-            return res.send(combinedResults);
+            startDate = `2024-${thisMonthString}-25`;
+            endDate = `2024-${nextMonthString}-25`;
         }
-        else if (dayNumber < 25) {
-            let lastMonthNumber, thisMonthString, lastmonthString;
+        else {
+            let lastMonthNumber;
+            let thisMonthString;
+            let lastMonthString;
             if (monthNumber === 1) {
                 lastMonthNumber = 12;
-                lastmonthString = "12";
+                lastMonthString = "12";
             }
             else {
-                lastMonthNumber = monthNumber - 1;
-                lastmonthString =
+                lastMonthNumber = monthNumber + 1;
+                lastMonthString =
                     lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`;
             }
             thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
-            const startDate = `2024-${lastmonthString}-25`;
-            const endDate = `2024-${thisMonthString}-24`;
-            const { rows: totalItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE", [id, startDate, endDate]);
-            const { rows: monthlyItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2", [id, endDate]);
-            const combinedResults = [...totalItems, ...monthlyItems];
-            return res.send(combinedResults);
+            startDate = `2024-${lastMonthString}-25`;
+            endDate = `2024-${thisMonthString}-25`;
         }
-        res.status(400).send("Invalid day value");
+        const { rows: totalItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE", [id, startDate, endDate]);
+        const { rows: monthlyItems } = yield client.query("SELECT * FROM budget WHERE account_id=$1 AND monthly=TRUE AND created_at <= $2", [id, endDate]);
+        const combinedResults = [...totalItems, ...monthlyItems];
+        return res.send(combinedResults);
     }
     catch (error) {
         console.error(error);

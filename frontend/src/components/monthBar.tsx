@@ -32,6 +32,7 @@ const monthBar = (props: monthProp) => {
     if (day < 25) {
       setMonthOne(monthNames[(month - 1 + 12) % 12]);
       setMonthTwo(monthNames[month]);
+
       props.setStartMonth((month - 1 + 12) % 12);
       props.setEndMonth(month);
       props.getTotal();

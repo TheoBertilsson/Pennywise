@@ -12,7 +12,6 @@ const addItemBudget = (props: addItemProp) => {
   const [showAddItem, setShowAddItem] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("housing");
   const handleSubmit = (e: any) => {
-    console.log(props.id);
     e.preventDefault();
 
     if (!item || !cost || !category) {
