@@ -22,7 +22,7 @@ main {
 /*  Home.TSX  */
 .mainHeader {
   margin: 0;
-  height: 120px;
+  height: 100px;
   background: -webkit-linear-gradient(left, #ffd700, #dd64b4);
   display: flex;
   justify-content: center;
