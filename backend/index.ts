@@ -69,45 +69,25 @@ app.get("/getTotal", async (req, res) => {
     }
 
     const monthNumber = Number(month);
-    const dayNumber = Number(day);
 
     let startDate, endDate;
 
-    if (dayNumber > 24) {
-      let nextMonthNumber;
-      let thisMonthString;
-      let nextMonthString;
+    let nextMonthNumber;
+    let thisMonthString;
+    let nextMonthString;
 
-      if (monthNumber === 12) {
-        nextMonthNumber = 1;
-        nextMonthString = "01";
-      } else {
-        nextMonthNumber = monthNumber + 1;
-        nextMonthString =
-          nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
-      }
-
-      thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
-      startDate = `2024-${thisMonthString}-25`;
-      endDate = `2024-${nextMonthString}-25`;
+    if (monthNumber === 12) {
+      nextMonthNumber = 1;
+      nextMonthString = "01";
     } else {
-      let lastMonthNumber;
-      let thisMonthString;
-      let lastMonthString;
-
-      if (monthNumber === 1) {
-        lastMonthNumber = 12;
-        lastMonthString = "12";
-      } else {
-        lastMonthNumber = monthNumber + 1;
-        lastMonthString =
-          lastMonthNumber < 10 ? `0${lastMonthNumber}` : `${lastMonthNumber}`;
-      }
-
-      thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
-      startDate = `2024-${lastMonthString}-25`;
-      endDate = `2024-${thisMonthString}-25`;
+      nextMonthNumber = monthNumber + 1;
+      nextMonthString =
+        nextMonthNumber < 10 ? `0${nextMonthNumber}` : `${nextMonthNumber}`;
     }
+
+    thisMonthString = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+    startDate = `2024-${thisMonthString}-25`;
+    endDate = `2024-${nextMonthString}-25`;
 
     const { rows: totalItems } = await client.query(
       "SELECT * FROM budget WHERE account_id=$1 AND created_at >= $2 AND created_at < $3 AND monthly=FALSE",
